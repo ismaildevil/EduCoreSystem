@@ -1170,8 +1170,8 @@
     initShellActions();
     icons(document);
 
-/* Hide loader after the application has initialized*/
-    hidePageLoader();
+// Hide loader after the application is initialized
+setTimeout(hidePageLoader, 250);
 }
 
   var API = {

@@ -1170,8 +1170,25 @@
     initShellActions();
     icons(document);
 
-// Hide loader after the application is initialized
-setTimeout(hidePageLoader, 250);
+function safelyHidePageLoader() {
+    if (typeof hidePageLoader === "function") {
+        hidePageLoader();
+    }
+}
+
+// Hide when the page finishes loading
+window.addEventListener("load", safelyHidePageLoader);
+
+// Also handle pages restored from browser cache
+window.addEventListener("pageshow", safelyHidePageLoader);
+
+// Handle cases where this script loads after the page has already loaded
+if (document.readyState === "complete") {
+    safelyHidePageLoader();
+}
+
+// Final fallback in case another script delays initialization
+setTimeout(safelyHidePageLoader, 2000);
 }
 
   var API = {

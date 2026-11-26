@@ -1125,6 +1125,7 @@
     document.title = title + " · EduCore Student Management";
   }
 
+ 
   /* -------------------------------------------------------------------------
      Boot
      ------------------------------------------------------------------------- */
@@ -1132,47 +1133,43 @@
   function boot() {
     if (window.DB && DB.ready && !window.__eduCoreShellReady) {
       window.__eduCoreShellReady = true;
-      DB.ready.then(boot).catch(function (error) {
+
+      DB.ready.then(function () {
+        boot();
+      }).catch(function (error) {
         var page = document.querySelector("main.main .page");
-        if (page) page.insertAdjacentHTML("afterbegin", "<div class=\"alert alert--danger\"><div class=\"alert__body\">" + escapeHtml(error.message || "Backend unavailable") + "</div></div>");
+
+        if (page) {
+          page.insertAdjacentHTML(
+            "afterbegin",
+            '<div class="alert alert--danger"><div class="alert__body">' +
+            escapeHtml(error.message || "Backend unavailable") +
+            "</div></div>"
+          );
+        }
+
         hidePageLoader();
       });
+
       return;
     }
-  var API = {
-    BASE: BASE,
-    qs: qs,
-    qsa: qsa,
-    icons: icons,
-    escapeHtml: escapeHtml,
-    debounce: debounce,
-    currentUser: currentUser,
-    openModal: openModal,
-    closeModal: closeModal,
-    confirmDialog: confirmDialog,
-    toast: toast,
-    withLoading: withLoading,
-    hidePageLoader: hidePageLoader,
-    validateForm: validateForm,
-    validateControl: validateControl,
-    showControlError: showControlError,
-    initLiveValidation: initLiveValidation,
-    renderPagination: renderPagination,
-    paginationState: paginationState,
-    avatarHTML: avatarHTML,
-    statusBadge: statusBadge,
-    downloadCSV: downloadCSV,
-    queryParam: queryParam,
-    go: go
-};
 
-window.App = API;
+    ensurePageLoader();
+    applyPageMeta();
+    renderShell();
+    initSidebar();
+    initDropdowns();
+    initPasswordToggles();
+    initShellActions();
+    icons(document);
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
-} else {
-    boot();
-}
+    hidePageLoader();
+  }
+
+  /* -------------------------------------------------------------------------
+     Export application functions
+     ------------------------------------------------------------------------- */
+
   var API = {
     BASE: BASE,
     qs: qs,
@@ -1202,13 +1199,14 @@ if (document.readyState === "loading") {
 
   window.App = API;
 
+  /* -------------------------------------------------------------------------
+     Start application
+     ------------------------------------------------------------------------- */
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
   }
 
-  window.addEventListener("load", function () {
-    setTimeout(hidePageLoader, 250);
-  });
 })();

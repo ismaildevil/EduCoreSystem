@@ -1139,58 +1139,40 @@
       });
       return;
     }
-   function boot() {
-    if (window.DB && DB.ready && !window.__eduCoreShellReady) {
-        window.__eduCoreShellReady = true;
+  var API = {
+    BASE: BASE,
+    qs: qs,
+    qsa: qsa,
+    icons: icons,
+    escapeHtml: escapeHtml,
+    debounce: debounce,
+    currentUser: currentUser,
+    openModal: openModal,
+    closeModal: closeModal,
+    confirmDialog: confirmDialog,
+    toast: toast,
+    withLoading: withLoading,
+    hidePageLoader: hidePageLoader,
+    validateForm: validateForm,
+    validateControl: validateControl,
+    showControlError: showControlError,
+    initLiveValidation: initLiveValidation,
+    renderPagination: renderPagination,
+    paginationState: paginationState,
+    avatarHTML: avatarHTML,
+    statusBadge: statusBadge,
+    downloadCSV: downloadCSV,
+    queryParam: queryParam,
+    go: go
+};
 
-        DB.ready.then(boot).catch(function (error) {
-            var page = document.querySelector("main.main .page");
+window.App = API;
 
-            if (page) {
-                page.insertAdjacentHTML(
-                    "afterbegin",
-                    "<div class=\"alert alert--danger\">" +
-                    escapeHtml(error.message || "Backend unavailable") +
-                    "</div>"
-                );
-            }
-
-            hidePageLoader();
-        });
-
-        return;
-    }
-
-    ensurePageLoader();
-    applyPageMeta();
-    renderShell();
-    initSidebar();
-    initDropdowns();
-    initPasswordToggles();
-    initShellActions();
-    icons(document);
-
-function safelyHidePageLoader() {
-    if (typeof hidePageLoader === "function") {
-        hidePageLoader();
-    }
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+} else {
+    boot();
 }
-
-// Hide when the page finishes loading
-window.addEventListener("load", safelyHidePageLoader);
-
-// Also handle pages restored from browser cache
-window.addEventListener("pageshow", safelyHidePageLoader);
-
-// Handle cases where this script loads after the page has already loaded
-if (document.readyState === "complete") {
-    safelyHidePageLoader();
-}
-
-// Final fallback in case another script delays initialization
-setTimeout(safelyHidePageLoader, 2000);
-}
-
   var API = {
     BASE: BASE,
     qs: qs,

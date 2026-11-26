@@ -1170,6 +1170,7 @@
     initShellActions();
     icons(document);
 
+/* Hide loader after the application has initialized*/
     hidePageLoader();
 }
 

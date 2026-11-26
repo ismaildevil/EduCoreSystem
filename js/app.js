@@ -216,7 +216,7 @@
       notifs.unread +
       " unread updates</span></div>" +
       '<div id="notifList">' +
-      notifs.php +
+      notifs.html +
       "</div>" +
       '<div class="dropdown__sep"></div>' +
       '<button type="button" class="dropdown__item" data-action="mark-read">' +
@@ -1141,12 +1141,15 @@
     }
     ensurePageLoader();
     applyPageMeta();
-    renderShell();
-    initSidebar();
-    initDropdowns();
-    initPasswordToggles();
-    initShellActions();
-    icons(document);
+ renderShell();
+initSidebar();
+initDropdowns();
+initPasswordToggles();
+initShellActions();
+icons(document);
+
+// Hide loader after the application has initialized
+setTimeout(hidePageLoader, 250);
   }
 
   var API = {

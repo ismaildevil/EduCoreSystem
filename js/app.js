@@ -1164,6 +1164,7 @@
     icons(document);
 
     hidePageLoader();
+     console.log("EduCore boot completed. Loader hidden.");
   }
 
   /* -------------------------------------------------------------------------

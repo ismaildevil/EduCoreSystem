@@ -1139,18 +1139,39 @@
       });
       return;
     }
+   function boot() {
+    if (window.DB && DB.ready && !window.__eduCoreShellReady) {
+        window.__eduCoreShellReady = true;
+
+        DB.ready.then(boot).catch(function (error) {
+            var page = document.querySelector("main.main .page");
+
+            if (page) {
+                page.insertAdjacentHTML(
+                    "afterbegin",
+                    "<div class=\"alert alert--danger\">" +
+                    escapeHtml(error.message || "Backend unavailable") +
+                    "</div>"
+                );
+            }
+
+            hidePageLoader();
+        });
+
+        return;
+    }
+
     ensurePageLoader();
     applyPageMeta();
- renderShell();
-initSidebar();
-initDropdowns();
-initPasswordToggles();
-initShellActions();
-icons(document);
+    renderShell();
+    initSidebar();
+    initDropdowns();
+    initPasswordToggles();
+    initShellActions();
+    icons(document);
 
-// Hide loader after the application has initialized
-setTimeout(hidePageLoader, 250);
-  }
+    hidePageLoader();
+}
 
   var API = {
     BASE: BASE,
